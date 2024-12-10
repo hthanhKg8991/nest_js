@@ -1,0 +1,102 @@
+services:
+  orders:
+    build:
+      context: .
+      dockerfile: ./apps/orders/Dockerfile
+      target: development
+    command: yarn start:dev orders
+    env_file:
+      - ./apps/orders/.env
+    depends_on:
+      - mongodb
+      - auth
+      - billing
+      # - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
+    
+    networks: 
+      - nestJS-Networks
+  # Microservice Auth
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: yarn start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - mongodb
+      # - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    networks: 
+      - nestJS-Networks
+  # Microservice Billing
+  billing:
+    build:
+      context: .
+      dockerfile: ./apps/billing/Dockerfile
+      target: development
+    command: yarn start:dev billing
+    env_file:
+      - ./apps/billing/.env
+    depends_on:
+      - mongodb
+      # - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3001:3001'
+    networks: 
+      - nestJS-Networks
+
+# Microservice rabbitMQ
+  # rabbitmq:
+  #   image: rabbitmq
+  #   ports:
+  #     - '${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT_LOCAL}'
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - ./.env
+
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config_data:/data/configdb
+
+    ports:
+      - '37017:27017'
+      
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: passDB
+      MONGO_INITDB_ROOT_DATABASE: nice_up
+
+    networks: 
+      - nestJS-Networks
+
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.runCommand('ping')"]
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 5s
+    #   timeout: 5s
+
+volumes:
+  mongo_data:
+    driver: local
+  mongo_config_data:
+    driver: local
+
+networks: 
+  nestJS-Networks:

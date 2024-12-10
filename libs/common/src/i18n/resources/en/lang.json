@@ -1,0 +1,17 @@
+{
+    "HELLO": "Hello",
+    "password": "Password",
+    "validation":{
+        "email":"Email does not match the format",
+        "not_permission_allowed":"Not permissions allowed"
+    },
+    "auth":{
+        "notFound":"Email or password not found!",
+        "please_contact_admin":"Please contact admin",
+        "update_password":"Update password"
+    },
+    "otp_expire": "The OTP has expired, please request a new OTP.",
+    "otp_not_verified": "OTP not verified",
+    "otp_not_match": "OTP not match",
+    "value_success": "{name} success!"
+}
