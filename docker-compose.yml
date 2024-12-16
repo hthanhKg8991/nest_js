@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: ./apps/orders/Dockerfile
-      target: development
-    command: yarn start:dev orders
+      # target: development
+    # command: yarn start:dev orders
     env_file:
       - ./apps/orders/.env
     depends_on:
@@ -13,7 +13,7 @@ services:
       - billing
       # - rabbitmq
     volumes:
-      - .:/usr/src/app
+      # - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - '3002:3002'
@@ -25,16 +25,17 @@ services:
     build:
       context: .
       dockerfile: ./apps/auth/Dockerfile
-      target: development
-    command: yarn start:dev auth
+      # target: development
+    # command: yarn start:dev auth
     env_file:
       - ./apps/auth/.env
     depends_on:
       - mongodb
       # - rabbitmq
     volumes:
-      - .:/usr/src/app
+      # - .:/usr/src/app
       - /usr/src/app/node_modules
+      # - ./apps/auth/i18n:/usr/src/app/dist/apps/auth/i18n
     ports:
       - '3000:3000'
     networks: 
@@ -44,26 +45,31 @@ services:
     build:
       context: .
       dockerfile: ./apps/billing/Dockerfile
-      target: development
-    command: yarn start:dev billing
+      # target: development
+    # command: yarn start:dev billing
     env_file:
       - ./apps/billing/.env
     depends_on:
       - mongodb
-      # - rabbitmq
+      - rabbitmq
     volumes:
-      - .:/usr/src/app
+      # - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - '3001:3001'
+    # ports:
+    #   - '3001:3001'
     networks: 
       - nestJS-Networks
 
 # Microservice rabbitMQ
-  # rabbitmq:
-  #   image: rabbitmq
-  #   ports:
-  #     - '${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT_LOCAL}'
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - '5672:5672'
+      - "15672:15672"
+    env_file:
+      - ./rabitmq.env
+    networks: 
+      - nestJS-Networks
   mongodb:
     image: mongo:latest
     container_name: mongodb

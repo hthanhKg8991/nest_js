@@ -3,11 +3,13 @@ import { AuthModule } from './auth.module';
 import { ValidationPipe } from '@nestjs/common';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { useContainer } from 'class-validator';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   // cross domain
   app.enableCors();
+  const configService = app.get(ConfigService);
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalPipes(new I18nValidationPipe());
@@ -17,6 +19,7 @@ async function bootstrap() {
     }),
   );
   useContainer(app.select(AuthModule), { fallbackOnErrors: true });
+
   // await app.listen(process.env.APP_PORT ?? 3000);
   await app.listen(3000);
 }

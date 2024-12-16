@@ -9,6 +9,7 @@ FROM node:alpine AS build
 
 WORKDIR /usr/src/app 
 COPY --from=development /usr/src/app/node_modules ./node_modules
+
 COPY . .
 RUN yarn build
 
@@ -24,7 +25,8 @@ COPY package*.json yarn*.lock ./
 RUN yarn --only=production
 
 COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build  /usr/src/app/node_modules ./node_modules
-COPY --from=build  /usr/src/app/.env .env
+COPY --from=build /usr/src/app/node_modules ./node_modules
+# COPY --from=build /usr/src/app/.env .env
+COPY ./apps/orders/i18n /usr/src/app/dist/apps/orders/i18n
 
 CMD ["node", "dist/apps/orders/main"]

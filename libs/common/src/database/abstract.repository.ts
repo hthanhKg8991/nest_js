@@ -8,9 +8,9 @@ import {
   Connection,
   QuerySelector,
 } from 'mongoose';
-import { AbstractDocument } from './abstract.schema';
+import { BaseSchema } from '../base/base.schema';
 
-export abstract class AbstractRepository<TDocument extends AbstractDocument> {
+export abstract class AbstractRepository<TDocument extends BaseSchema> {
   protected abstract readonly logger: Logger;
 
   constructor(

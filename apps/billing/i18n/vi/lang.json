@@ -1,0 +1,18 @@
+{
+    "HELLO": "Xin Chào",
+    "password": "Mật khẩu",
+    "validation":{
+        "email":"Email không đúng định dạng!",
+        "not_permission_allowed":"Không được cấp quyền"
+    },
+    "auth":{
+        "notFound":"Email hoặc mật khẩu không tìm thấy!",
+        "please_contact_admin":"Vui lòng liên hệ quản trị viên!",
+        "update_password":"Đổi mật khẩu"
+
+    },
+    "otp_expire": "Mã OTP đã hết hạn, vui lòng yêu cầu mã OTP mới.",
+    "otp_not_verified": "OTP chưa dược xác thực",
+    "otp_not_match": "OTP không hợp lệ",
+    "value_success": "{name} thành công!"
+}

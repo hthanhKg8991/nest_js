@@ -10,7 +10,7 @@ async function bootstrap() {
   console.log('ThanhNguyen:: APP_PORT)', configService.get('APP_PORT'));
   // await app.listen(configService.get('APP_PORT'));
 
-  await app.listen(3002);
+  await app.listen(configService.get('APP_PORT') || 3002);
   // await app.listen(process.env.APP_PORT ?? 3001);
 }
 bootstrap();
